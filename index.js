@@ -3,11 +3,10 @@ const path = require("path");
 const fs = require("fs");
 const colors = require("colors");
 const templateEntryFile = require("./templates/templateEntryFile");
-const templateStyleFile = require("./templates/templateStyleFile");
+// const templateStyleFile = require("./templates/templateStyleFile");
 const templateIndexFile = require("./templates/templateIndexFile");
 const templateJestFile = require("./templates/templateJestFile");
-const templateReadMeFile = require("./templates/templateReadMeFile");
-const templateStoryBookFile = require("./templates/templateStoryBookFile");
+const templateDocsFile = require("./templates/templateDocsFile");
 const { capitalizeFirstLetter, message } = require("./utils");
 
 const scrFolder = "src";
@@ -41,30 +40,24 @@ const files = [
     fileName: "index"
   },
   {
-    name: "readMe file",
-    ext: "md",
-    template: templateReadMeFile,
-    fileName: "README"
-  },
-  {
     name: "entry file",
     ext: "js",
     template: templateEntryFile
   },
-  {
-    name: "style file",
-    ext: "less",
-    template: templateStyleFile
-  },
+  // {
+  //   name: "style file",
+  //   ext: "less",
+  //   template: templateStyleFile
+  // },
   {
     name: "jest file",
     ext: "spec.js",
     template: templateJestFile
   },
   {
-    name: "storyBook file",
-    ext: "stories.js",
-    template: templateStoryBookFile
+    name: "Docs file",
+    ext: "docs.js",
+    template: templateDocsFile
   }
 ];
 prompt.get(schema, (err, result) => {

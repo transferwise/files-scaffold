@@ -1,15 +1,15 @@
-const templateEntryFile = name => `import React ,{PureComponent} from 'react';
+const templateEntryFile = name => `import React ,{Component} from 'react';
 import Types from 'prop-types';
 
-export default class ${name} extends React.PureComponent {
-    // Component's PropsTypes
+class ${name} extends Component {
     static propTypes = {}
-    // Component's defaultProps
     static defaultProps = {}
     render(){
-     return <div className={'tw-${name.toLowerCase()}'}>// Insert your code here</div>;
+     return <div>// Insert your code here</div>;
     }
 }
+
+export default ${name}
 `;
 
 module.exports = templateEntryFile;

@@ -1,5 +1,3 @@
-const templateIndexFile = name => `import ${name} from './${name}';
-export default ${name};
-`;
+const templateIndexFile = name => `export { default } from  './${name}';`;
 
 module.exports = templateIndexFile;
