@@ -1,0 +1,87 @@
+# Confirm that the config file si valid:
+# https://circleci.com/docs/2.0/local-cli/
+
+version: 2
+
+aliases:
+  - &workspace-root ~/files-scaffold
+
+  - &container
+    working_directory: *workspace-root
+    docker:
+      - image: circleci/node:lts
+
+  - &attach-workspace
+    attach-workspace:
+      at: *workspace-root
+
+  - &persist-workspace
+    persist_to_workspace:
+      root: .
+      paths:
+        - "*"
+
+  - &install
+    name: Install dependencies
+    command: yarn install --frozen-lockfile
+
+  - &lerna-publish
+    name: Publish packages
+    command: npx lerna publish -m "[skip ci] Release" --yes
+
+  - &conventional-commit-lint
+    name: Conventional Commits check
+    command: npx commitlint -f $(git log --author=CircleCI -1 --format=format:"%H") -V
+
+  - &add-npm-release-token
+    name: Set NPM publish token
+    command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN_PUBLISH" >> ~/.npmrc
+
+  - &set-github-credentials
+    name: Set github credentials
+    command: |
+      mkdir -p ~/.ssh
+      ssh-keyscan github.com >> ~/.ssh/known_hosts
+      git config --global user.email "circleci@transferwise.com"
+      git config --global user.name "CircleCI"
+
+jobs:
+  install:
+    <<: *container
+    steps:
+      - checkout
+      - run: *install
+      - *persist-workspace
+
+  conventional-commit-lint:
+    <<: *container
+    steps:
+      - *attach-workspace
+      - run: *conventional-commit-lint
+
+  # publish:
+  #   <<: *container
+  #   steps:
+  #     - *attach-workspace
+  #     - run: *set-github-credentials
+  #     - run: *add-npm-release-token
+  #     - run: *lerna-publish
+
+workflows:
+  version: 2
+  build-deploy-release:
+    jobs:
+      - install:
+          context: frontend-build
+
+      - conventional-commit-lint:
+          context: frontend-build
+          requires:
+            - install
+      # - publish:
+      #     context: frontend-publish
+      #     requires:
+      #       - conventional-commit-lint
+      #     filters:
+      #       branches:
+      #         only: master
