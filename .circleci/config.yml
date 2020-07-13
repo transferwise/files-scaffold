@@ -25,13 +25,13 @@ aliases:
     name: Install dependencies
     command: yarn install --frozen-lockfile
 
-  - &lerna-publish
+  - &npm-publish
     name: Publish packages
-    command: npx lerna publish -m "[skip ci] Release" --yes
+    command: yarn publish --access public
 
-  - &conventional-commit-lint
-    name: Conventional Commits check
-    command: npx commitlint -f $(git log --author=CircleCI -1 --format=format:"%H") -V
+  # - &conventional-commit-lint
+  #   name: Conventional Commits check
+  #   command: npx commitlint -f $(git log --author=CircleCI -1 --format=format:"%H") -V
 
   - &add-npm-release-token
     name: Set NPM publish token
@@ -45,27 +45,37 @@ aliases:
       git config --global user.email "circleci@transferwise.com"
       git config --global user.name "CircleCI"
 
+  - &save-yarn-cache
+    key: yarn-cache-{{ checksum "yarn.lock" }}
+    paths:
+      - ~/.cache/yarn
+
+  - &restore-yarn-cache
+    keys:
+      - yarn-cache-{{ checksum "yarn.lock" }}
+      - yarn-cache-
+
 jobs:
   install:
     <<: *container
     steps:
       - checkout
+      - restore-cache: *restore-yarn-cache
       - run: *install
       - *persist-workspace
-
-  conventional-commit-lint:
-    <<: *container
-    steps:
-      - *attach-workspace
-      - run: *conventional-commit-lint
-
+      - save_cache: *save-yarn-cache
+  # conventional-commit-lint:
+  #   <<: *container
+  #   steps:
+  #     - *attach-workspace
+  #     - run: *conventional-commit-lint
   # publish:
   #   <<: *container
   #   steps:
   #     - *attach-workspace
   #     - run: *set-github-credentials
   #     - run: *add-npm-release-token
-  #     - run: *lerna-publish
+  #     - run: *npm-publish
 
 workflows:
   version: 2
@@ -73,11 +83,10 @@ workflows:
     jobs:
       - install:
           context: frontend-build
-
-      - conventional-commit-lint:
-          context: frontend-build
-          requires:
-            - install
+      # - conventional-commit-lint:
+      #     context: frontend-build
+      #     requires:
+      #       - install
       # - publish:
       #     context: frontend-publish
       #     requires:
