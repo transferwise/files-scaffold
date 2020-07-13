@@ -12,7 +12,9 @@ try {
   files = fs.readdirSync(templatesDirectory);
 } catch (err) {
   // An error occurred
-  return console.error("Please add a templates directory");
+  return console.error(
+    "Unable to find your templates files. Please ensure your .scaffold-templates has been created correctly"
+  );
 }
 
 const fileFootprint = [];
@@ -23,9 +25,7 @@ try {
     fileFootprint.push({ ...templateFile });
   });
 } catch (err) {
-  return console.log(
-    "Unable to find your templates files. Please ensure your .scaffold-templates has been created correctly"
-  );
+  return console.log(err);
 }
 
 //

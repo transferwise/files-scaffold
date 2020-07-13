@@ -17,7 +17,7 @@ import Types from "prop-types";
 **/
     
 const ${capitalizeFirstLetter(name)} = (props) => {
-  return ();
+  return 'your component implementation here';
 };
 
 ${capitalizeFirstLetter(name)}.propTypes = {};
