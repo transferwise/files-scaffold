@@ -1,7 +1,7 @@
 {
   "name": "@transferwise/files-scaffold",
   "license": "Apache-2.0",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple utility to scaffold components",
   "main": "cli.js",
   "dependencies": {
