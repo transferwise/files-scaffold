@@ -1,4 +1,6 @@
-const { capitalizeFirstLetter } = require("../utils/index.js");
+const {
+  capitalizeFirstLetter,
+} = require("@transferwise/files-scaffold/utils/index.js");
 
 module.exports = {
   type: "export",

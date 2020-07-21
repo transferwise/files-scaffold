@@ -1,9 +1,11 @@
-const { capitalizeFirstLetter } = require('../utils/index.js');
+const {
+  capitalizeFirstLetter,
+} = require("@transferwise/files-scaffold/utils/index.js");
 
 module.exports = {
-  type: 'story',
-  path: 'packages/components/src',
-  ext: 'story.js',
+  type: "story",
+  path: "packages/components/src",
+  ext: "story.js",
   createDir: true,
   name: (name) => capitalizeFirstLetter(name),
   template: (name) => `import React from 'react';
