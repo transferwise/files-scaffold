@@ -1,12 +1,16 @@
-const { capitalizeFirstLetter } = require('../utils/index.js');
+const {
+  capitalizeFirstLetter,
+} = require("@transferwise/files-scaffold/utils/index.js");
 
 module.exports = {
-  type: 'docs',
-  path: 'packages/docs/pages/components',
-  ext: 'mdx',
+  type: "docs",
+  path: "packages/docs/pages/components",
+  ext: "mdx",
   createDir: false,
   name: (name) => capitalizeFirstLetter(name),
-  template: (name) => `import { LiveEditorBlock, GeneratePropsTable } from '../../utils';
+  template: (
+    name
+  ) => `import { LiveEditorBlock, GeneratePropsTable } from '../../utils';
 import { ${capitalizeFirstLetter(name)} } from '@transferwise/components';
 import code from '../../liveEditorCode/${name}.code';
 
